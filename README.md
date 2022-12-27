@@ -16,24 +16,24 @@ import sveltekitSprite from 'sveltekit-sprite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
- plugins: [
-  sveltekitSprite({
-   svgSource: 'src/lib/sprite.svg',
-   svgoOptions: {
-    plugins: [
-     {
-      name: 'preset-default',
-      params: {
-       overrides: {
-         cleanupIDs: false
-       }
+  plugins: [
+    sveltekitSprite({
+      svgSource: 'src/lib/sprite.svg',
+      svgoOptions: {
+        plugins: [
+          {
+            name: 'preset-default',
+            params: {
+              overrides: {
+                cleanupIDs: false
+              }
+            }
+          }
+        ]
       }
-     }
-    ]
-   }
-  }),
-  sveltekit()
- ],
+    }),
+    sveltekit()
+  ],
 };
 
 ...
@@ -43,8 +43,8 @@ const config = {
 📄 app.html
 
 <body data-sveltekit-preload-data="hover">
- %vite.plugin.sprite%
- <div style="display: contents">%sveltekit.body%</div>
+  %vite.plugin.sprite%
+  <div style="display: contents">%sveltekit.body%</div>
 </body>
 ```
 details & more - soon…
