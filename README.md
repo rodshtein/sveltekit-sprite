@@ -19,13 +19,13 @@ The plugin compile svg files into a sprite and render to the app template
 
 ## Get started
 
-### 1. Install plugin `npm install -D svetekit-sprite`   
+### 1. Install plugin `npm install -D sveltekit-sprite`   
 
 ### 2. Edit `vite.config.js` config 
 
 ```diff 
   import { sveltekit } from '@sveltejs/kit/vite';
-+ import sveltekitSprite from 'sveltekit-sprite';
++ import { sveltekitSprite } from 'sveltekit-sprite';
 
   /** @type {import('vite').UserConfig} */
   const config = {

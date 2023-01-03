@@ -1,6 +1,6 @@
 {
   "name": "sveltekit-sprite",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The plugin inline SVG into SvelteKit app template",
   "private": false,
   "type": "module",
