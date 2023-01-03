@@ -1,0 +1,80 @@
+<svg>
+  <symbol id="svg--icon" viewBox="0 0 100 100">
+    <mask id="svg-style--icon__a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100"
+      height="100">
+      <path fill="#D9D9D9" d="M0 0h100v100H0z" />
+    </mask>
+    <g mask="url(#svg-style--icon__a)">
+      <path fill="url(#svg-style--icon__b)" d="M-11-11h123v123H-11z" />
+    </g>
+    <defs>
+      <linearGradient id="svg-style--icon__b" x1="-36.5" y1="50" x2="136" y2="50" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#06F" />
+        <stop offset="1" stop-color="#8FFF00" />
+      </linearGradient>
+    </defs>
+  </symbol>
+  <symbol id="svg--one-icon" viewBox="0 0 100 100">
+    <mask id="svg-style--one-icon__a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100"
+      height="100">
+      <path fill="#D9D9D9" d="M0 0h100v100H0z" />
+    </mask>
+    <g mask="url(#svg-style--one-icon__a)">
+      <path fill="url(#svg-style--one-icon__b)" d="M-11-11h123v123H-11z" />
+    </g>
+    <defs>
+      <linearGradient id="svg-style--one-icon__b" x1="-36.5" y1="50" x2="136" y2="50" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#FA00FF" />
+        <stop offset="1" stop-color="#00FFF0" />
+      </linearGradient>
+    </defs>
+  </symbol>
+  <symbol id="svg--one-two-icon" viewBox="0 0 100 100">
+    <mask id="svg-style--one-two-icon__a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100"
+      height="100">
+      <path fill="#D9D9D9" d="M0 0h100v100H0z" />
+    </mask>
+    <g mask="url(#svg-style--one-two-icon__a)">
+      <path fill="url(#svg-style--one-two-icon__b)" d="M-11-11h123v123H-11z" />
+    </g>
+    <defs>
+      <linearGradient id="svg-style--one-two-icon__b" x1="-36.5" y1="50" x2="136" y2="50"
+        gradientUnits="userSpaceOnUse">
+        <stop stop-color="#D933C8" />
+        <stop offset="1" stop-color="#00FF75" />
+      </linearGradient>
+    </defs>
+  </symbol>
+  <symbol id="svg--one-two-tree-icon" viewBox="0 0 100 100">
+    <mask id="svg-style--one-two-tree-icon__a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+      width="100" height="100">
+      <path fill="#D9D9D9" d="M0 0h100v100H0z" />
+    </mask>
+    <g mask="url(#svg-style--one-two-tree-icon__a)">
+      <path fill="url(#svg-style--one-two-tree-icon__b)" d="M-11-11h123v123H-11z" />
+    </g>
+    <defs>
+      <linearGradient id="svg-style--one-two-tree-icon__b" x1="-36.5" y1="50" x2="136" y2="50"
+        gradientUnits="userSpaceOnUse">
+        <stop stop-color="#EB00FF" />
+        <stop offset="1" stop-color="#8FFF00" />
+      </linearGradient>
+    </defs>
+  </symbol>
+  <symbol id="svg--secondone-icon" viewBox="0 0 100 100">
+    <mask id="svg-style--secondone-icon__a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100"
+      height="100">
+      <path fill="#D9D9D9" d="M0 0h100v100H0z" />
+    </mask>
+    <g mask="url(#svg-style--secondone-icon__a)">
+      <path fill="url(#svg-style--secondone-icon__b)" d="M-11-11h123v123H-11z" />
+    </g>
+    <defs>
+      <linearGradient id="svg-style--secondone-icon__b" x1="-36.5" y1="50" x2="136" y2="50"
+        gradientUnits="userSpaceOnUse">
+        <stop stop-color="#FA00FF" />
+        <stop offset="1" stop-color="#FF7A00" />
+      </linearGradient>
+    </defs>
+  </symbol>
+</svg>

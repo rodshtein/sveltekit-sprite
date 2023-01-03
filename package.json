@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "The plugin inline SVG into SvelteKit app template",
   "private": false,
+  "type": "module",
   "keywords": [
     "sveltekit-plugin",
     "svg",
@@ -14,17 +15,22 @@
     "inline-svg",
     "inline"
   ],
+  "scripts": {
+    "dev": "vitest dev",
+    "build": "npx unbuild",
+    "link": "npm link sveltekit-sprite && cd test && npm run link",
+    "svelte-test": "npm run build && npm run link && cd test && npm run dev"
+  },
   "files": [
-    "app.d.ts",
     "dist"
   ],
-  "scripts": {
-    "dev": "tsc -w",
-    "build": "tsc",
-    "link": "npm link sveltekit-sprite && cd test && npm run link",
-    "test": "npm run link && cd test && npm run dev"
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
   },
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "author": {
@@ -40,26 +46,26 @@
   },
   "homepage": "https://github.com/rodshtein/sveltekit-sprite",
   "devDependencies": {
-    "@types/node": "^15.0.1",
+    "@playwright/test": "^1.28.1",
+    "@sveltejs/adapter-auto": "^1.0.0",
+    "@sveltejs/kit": "^1.0.0",
+    "@types/node": "^15.14.9",
     "@types/svgo": "^2.3.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
     "cross-env": "^7.0.3",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-svelte3": "^4.0.0",
     "prettier": "^2.2.1",
+    "prettier-plugin-svelte": "^2.8.1",
+    "svelte": "^3.54.0",
+    "svelte-check": "^2.9.2",
     "tslib": "^2.4.0",
     "typescript": "^4.8.2",
+    "unbuild": "^1.0.2",
     "vite": "^4.0.0",
-
-    "@playwright/test": "^1.28.1",
-		"@sveltejs/adapter-auto": "^1.0.0",
-		"@sveltejs/kit": "^1.0.0",
-		"@typescript-eslint/eslint-plugin": "^5.45.0",
-		"@typescript-eslint/parser": "^5.45.0",
-		"eslint": "^8.28.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-svelte3": "^4.0.0",
-		"prettier-plugin-svelte": "^2.8.1",
-		"svelte": "^3.54.0",
-		"svelte-check": "^2.9.2",
-		"vitest": "^0.25.3"
+    "vitest": "^0.25.8"
   },
   "dependencies": {
     "svgo": "^2.3.0"
