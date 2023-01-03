@@ -112,7 +112,7 @@ sveltekitSprite({
 Label in the app.html template to place the sprite string
 
 ```javascript 
-injectLabel({
-  stylePrefix: '%vite.plugin.sprite%',
+sveltekitSprite({
+  injectLabel: '%vite.plugin.sprite%',
 }),
 ```
