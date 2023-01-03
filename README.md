@@ -1,6 +1,6 @@
 # SvelteKit Sprite Plugin
 
-The plugin compile svg files into a sprite and put them into the app template  
+The plugin compile svg files into a sprite and render to the app template  
 - Sprite with symbols from svg files
 - Uniq id links in symbols
 - Uniq id's for all symbols
