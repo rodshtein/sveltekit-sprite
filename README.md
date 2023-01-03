@@ -53,7 +53,7 @@ The plugin compile svg files into a sprite and render to the app template
 ⚠️ For now sprite will compile once on start app in dev mode or on build. If you want add more symbols to sprite → restart the app.<br> 
 
 ### 6. Add link to the specific symbol on your page
-Symbols id's will begin with the prefix `svg` + `subfolder name` + `file name`  
+Symbols id's will begin with the prefix `svg--[subfolder]-[file-name]`  
 👉 You can change symbol prefix by `symbolPrefix` option.
 
 ```html
@@ -93,7 +93,7 @@ sveltekitSprite({
 ```
 ### symbolPrefix
 From the prefix begin all id of symbols:  
-`[symbolPrefix]--[path-path]-[file-name]` 
+`[symbolPrefix]--[subfolder]-[file-name]` 
 ```javascript 
 sveltekitSprite({
   symbolPrefix: 'svg',
@@ -101,7 +101,7 @@ sveltekitSprite({
 ```
 ### stylePrefix
 All id's in the svg files will be replaced by he prefix and file name:  
-`[stylePrefix]--[path-path]-[file-name]`
+`[stylePrefix]--[subfolder]-[file-name]`
 
 ```javascript 
 sveltekitSprite({
