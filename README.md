@@ -1,28 +1,32 @@
 # SvelteKit Sprite Plugin
 
-The plugin compile svg files into a sprite and render to the app template  
+The plugin compiles svg files into a sprite and inline as string to the app template.<br>
 - Sprite with symbols from svg files
 - Uniq id links in symbols
 - Uniq id's for all symbols
 - Folder based id's
 - Sprite as string in app.html
-- SVGO for sprite optimization
+- SVGO for sprite optimization<br>
+<br>
+
 ## Roadmap
-- [x] Build sprite from folder
-- [x] Style id encapsulating
-- [  ] Build sprite from files array
-- [  ] Error handling 
-- [  ] File watcher 
-- [  ] Save sprite to file 
-- [  ] Unwrap symbols from file in folder 
-- [  ] Add svg's from @import 
+☑︎  Build sprite from folder<br>
+☑︎  Style id encapsulating<br>
+□  Build sprite from files array<br>
+□  Error handling<br>
+□  File watcher<br>
+□  Save sprite to file<br>
+□  Unwrap symbols from file in folder<br>
+□  Add svg's from @import<br>
+<br>
 
 ## Get started
 
-**1. Install plugin: `npm i -D sveltekit-sprite`**   
-<br>
+**1. Install the plugin**<br>
+Run `npm i -D sveltekit-sprite` command.<br>
 
-**2. Edit `vite.config.js` config**
+**2. Edit Vite config**<br>
+Import and configure the plugin in the `vite.config.js` file:<br>
 
 ```diff 
   import { sveltekit } from '@sveltejs/kit/vite';
@@ -38,8 +42,9 @@ The plugin compile svg files into a sprite and render to the app template
 ```
 <br>
 
-**3. Add target label to `app.html`**<br>
-You can change label by injectLabel option.<br>
+**3. Add label to app template**<br>
+In `app.html` add label `%vite.plugin.sprite%` to point Vite where to inline the svg sprite.<br>
+You can change label by [injectLabel](#injectlabel) option.<br>
 ```diff
   <body data-sveltekit-preload-data="hover">
 +   %vite.plugin.sprite%
@@ -49,7 +54,7 @@ You can change label by injectLabel option.<br>
 <br>
 
 **4. Put your svg files to `./src/lib/sprite/`**<br>
-You can change sprite folder by `svgSource` option.
+You can change sprite folder by [svgSource](#svgsource) option.
 <br>
 
 **5. Run app `npm run dev`**<br>
@@ -58,18 +63,20 @@ You can change sprite folder by `svgSource` option.
 
 **6. Add link to the specific symbol on your page**<br>
 Symbols id's will begin with the prefix `svg--[subfolder]-[file-name]`<br>
-You can change symbol prefix by `symbolPrefix` option.
+You can change symbol prefix by [symbolPrefix](#symbolprefix) option.
 ```html
 <svg>
   <use xlink:href="#svg--icon" />
 </svg>
 ```
+<br>
 
 ## Options
-Default option are presented
+Default option are presented. 
 ### svgoOptions
-See SVGO config info on [official repo](https://github.com/svg/svgo)<br>
-⚠️ Additional option `presetDefault` for disable [default plugins](https://github.com/svg/svgo#default-preset)
+See SVGO config info on [official repo](https://github.com/svg/svgo).<br>
+The default optimization preset is [default-preset](https://github.com/svg/svgo#default-preset). You can override the preset, see [how to do it](https://github.com/svg/svgo#default-preset).<br>
+Or you can completely disable all optimizations by: `presetDefault: false` option.<br>
 
 ```javascript 
 sveltekitSprite({
@@ -79,6 +86,7 @@ sveltekitSprite({
   },
 }),
 ```
+<br>
 
 ### svgSource
 You can use it in two ways:<br>
@@ -95,25 +103,29 @@ sveltekitSprite({
   svgSource: 'src/lib/sprite',
 }),
 ```
+<br>
+
 ### symbolPrefix
-From the prefix begin all id of symbols:<br>
-`[symbolPrefix]--[subfolder]-[file-name]` 
+From the prefix begin all id of symbols: `[symbolPrefix]--[subfolder]-[file-name]` 
 ```javascript 
 sveltekitSprite({
   symbolPrefix: 'svg',
 }),
 ```
+<br>
+
 ### stylePrefix
-All id's in the svg files will be replaced by he prefix and file name:<br>
-`[stylePrefix]--[subfolder]-[file-name]`
+All id's in the svg files will be replaced by he prefix and file name: `[stylePrefix]--[subfolder]-[file-name]`
 
 ```javascript 
 sveltekitSprite({
   stylePrefix: 'svg-style',
 }),
 ```
+<br>
+
 ### injectLabel
-Label in the app.html template to place the sprite string<br>
+Label in the app.html template to place the sprite string. <br>
 
 ```javascript 
 sveltekitSprite({
