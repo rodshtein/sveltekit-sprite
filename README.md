@@ -69,7 +69,12 @@ You can change symbol prefix by `symbolPrefix` option.
 Default option are presented
 ### svgoOptions
 See SVGO config info on [official repo](https://github.com/svg/svgo)<br>
-⚠️ Additional option `presetDefault` for disable [default plugins](https://github.com/svg/svgo#default-preset)
+Additional option `presetDefault` for disable [default plugins](https://github.com/svg/svgo#default-preset)<br>
+<br>
+⚠️ If you pass your own `presetDefault` preset, Svelte-sprite will disable the cleanupIDs option and add the `removeViewBox: false` option to build the sprite from folder.
+
+⚠️ `prefixIds` option is always on for build a sprite from a folder with the: `prefix` option, you can't override it.
+<br>
 
 ```javascript 
 sveltekitSprite({

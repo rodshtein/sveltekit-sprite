@@ -1,6 +1,6 @@
 {
   "name": "sveltekit-sprite",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The plugin inline SVG into SvelteKit app template",
   "private": false,
   "type": "module",
@@ -49,6 +49,7 @@
     "@playwright/test": "^1.28.1",
     "@sveltejs/adapter-auto": "^1.0.0",
     "@sveltejs/kit": "^1.0.0",
+    "@types/lodash.merge": "^4.6.7",
     "@types/node": "^15.14.9",
     "@types/svgo": "^2.3.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
@@ -57,6 +58,7 @@
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte3": "^4.0.0",
+    "lodash.merge": "^4.6.2",
     "prettier": "^2.2.1",
     "prettier-plugin-svelte": "^2.8.1",
     "svelte": "^3.54.0",

@@ -1,9 +1,11 @@
 import type { Options } from './types'
+import _merge from 'lodash.merge'
 
 import { 
   optimize, 
   type OptimizedError, 
-  type OptimizeOptions
+  type OptimizeOptions,
+  type Plugin,
 } from 'svgo';
 
 import { readdir, readFile, lstat } from 'fs/promises';
@@ -37,13 +39,15 @@ export async function compiler(
   } else {
     // Rules for already sprite file
     spriteString = await optimizeSVG({
+      svgoOptions: pluginsConstructor({
         filePath: svgSource, 
         symbolId: symbolPrefix, 
         stylePrefix,
         svgoOptions,
         singleFileSprite: true
-        }
-      )
+        }),
+      filePath: svgSource
+    })
     return spriteString.replace(/<svg.*?>/is, `<svg ${visuallyHidden}>`)
   }
 }
@@ -84,7 +88,15 @@ export async function getSymbol({ filePath, symbolId, symbolPrefix, stylePrefix,
   svgoOptions:OptimizeOptions & {presetDefault?:boolean}
 }):Promise<string>{
   
-  const readySvgString = await optimizeSVG({ filePath, symbolId, stylePrefix, svgoOptions });
+  const readySvgString = await optimizeSVG({ 
+    svgoOptions: pluginsConstructor({ 
+      filePath, 
+      symbolId, 
+      stylePrefix, 
+      svgoOptions
+    }),
+    filePath
+  });
 
   const rules = {
     // Keep viewBox 
@@ -101,51 +113,11 @@ export async function getSymbol({ filePath, symbolId, symbolPrefix, stylePrefix,
 
 export async function optimizeSVG({
   filePath,
-  symbolId,
-  stylePrefix,
   svgoOptions,
-  singleFileSprite = false
 }:{
   filePath:string, 
-  symbolId:string,
-  stylePrefix:string,
   svgoOptions:OptimizeOptions & {presetDefault?:boolean},
-  singleFileSprite?:boolean
 }){
-
-  const mandatorySvgoOptions:OptimizeOptions = {
-    path: filePath,
-    plugins: !singleFileSprite
-    ? [
-        {
-          name: 'prefixIds',
-          params:  {
-            prefix: stylePrefix+'--'+symbolId,
-          }
-        }
-     ]
-    : []
-  };
-
-  // Enable default optimizations
-  if(svgoOptions.presetDefault) {
-    // We use unshift() otherwise the mandatory options will overwrite the presets 
-    mandatorySvgoOptions.plugins?.unshift({
-      name: 'preset-default',
-      params: {
-        overrides: {
-          removeViewBox: false,
-          cleanupIDs: {
-            remove: !singleFileSprite, // disable if is already sprite 
-            minify: !singleFileSprite // disable if is already sprite 
-          },
-        }
-      }
-    })
-  }
-
-  // Merge incoming options 
-  svgoOptions = {...svgoOptions, ...mandatorySvgoOptions }
   
   const rawSvgString = await readFile(filePath, 'utf-8');
   const readySvgString = optimize(rawSvgString, svgoOptions)
@@ -160,4 +132,120 @@ export async function optimizeSVG({
   }
 
   return readySvgString.data
+}
+
+const pluginsCache:{
+  svgoOptions:OptimizeOptions & { presetDefault?:boolean }
+} = {
+  svgoOptions: {}
+};
+
+export function pluginsConstructor({
+  filePath,
+  symbolId,
+  stylePrefix,
+  svgoOptions,
+  singleFileSprite = false
+}:{
+  filePath:string, 
+  symbolId:string,
+  stylePrefix:string,
+  svgoOptions:OptimizeOptions & {presetDefault?:boolean},
+  singleFileSprite?:boolean
+}){
+
+  // Only prefix, symbolId and filePath are uniq for every request
+  const prefixIdsPlugin:Plugin = {
+    name: 'prefixIds',
+    params:  {
+      prefix: stylePrefix + '--' + symbolId,
+    }
+  };
+
+  if(pluginsCache.svgoOptions?.plugins){
+    let plugin = pluginsCache.svgoOptions?.plugins?.find(plugin => {
+      return typeof plugin === 'object' && plugin.name === 'prefixIds'
+    })
+
+    if( typeof plugin === 'object'){
+      plugin = _merge(plugin, prefixIdsPlugin)
+    }
+
+    pluginsCache.svgoOptions.path = filePath;
+
+  } else {
+    svgoOptions.path = filePath;
+    
+    // Prepare SVGO Params 
+    const defaultPreset:Plugin = {
+      name: 'preset-default',
+      params: {
+        overrides: {
+          cleanupIDs: {
+            remove: false,
+            minify: false
+          },
+        }
+      }
+    };
+
+    if(!singleFileSprite && defaultPreset?.params?.overrides) {
+      defaultPreset.params.overrides.removeViewBox = false 
+    }
+
+    let defaultConfigFound = false;
+    let prefixIdsConfigFound = false;
+
+    // Preparing a ready array of plugins 
+    svgoOptions?.plugins?.forEach(plugin => {
+      // Prepare plugins that were declared as a object
+      if (typeof plugin === 'object') {
+
+        // Merge our presets to preset-default
+        if(plugin.name === 'preset-default'){
+          defaultConfigFound = true;
+          plugin.params = _merge(plugin.params, defaultPreset.params) 
+        }
+
+        // Ability to edit prefixes only in single file sprite
+        if(plugin.name === 'prefixIds' && !singleFileSprite){
+          prefixIdsConfigFound = true;
+          plugin.params = _merge(plugin.params, prefixIdsPlugin.params) 
+        }
+
+      // Prepare plugins that were declared as a string 
+      } else if(plugin === 'preset-default'){
+        defaultConfigFound = true;
+        plugin = defaultPreset
+
+      } else if(plugin === 'prefixIds' && !singleFileSprite){
+        prefixIdsConfigFound = true;
+        plugin = prefixIdsPlugin
+      }
+    });
+
+    // Add default preset if it's not presented
+    if(!defaultConfigFound && svgoOptions.presetDefault){
+      if(svgoOptions.plugins){
+          svgoOptions.plugins.push(defaultPreset)
+      } else {
+          svgoOptions.plugins = [defaultPreset]
+      }
+    }
+
+    // Add prefix ids plugin if it's not presented
+    if(!prefixIdsConfigFound && !singleFileSprite){
+      if(svgoOptions.plugins){
+        svgoOptions.plugins.push(prefixIdsPlugin)
+      } else {
+        svgoOptions.plugins = [prefixIdsPlugin]
+      }
+    }
+
+    pluginsCache.svgoOptions = svgoOptions
+  }
+
+  console.dir(svgoOptions, { depth: null });
+
+  return pluginsCache.svgoOptions
 }
