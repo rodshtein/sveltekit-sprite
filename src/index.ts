@@ -11,7 +11,15 @@ function sveltekitSprite({
   svgoOptions,
 }: Options = {}): Plugin {
   const appTemplate:string = readFileSync('src/app.html', 'utf-8');
+  const closeBundle = async () => {
+    writeFileSync("src/app.html", appTemplate);
+  };
 
+  process.on('SIGINT', async () => {
+    await closeBundle();
+    process.exit(0);
+  });
+  
   return {
     name: 'sveltekit-sprite',
     async buildStart() {
@@ -24,10 +32,7 @@ function sveltekitSprite({
       
       writeFileSync('src/app.html', appTemplate.replace(injectLabel, filesString))
     },
-
-    async closeBundle() {
-      writeFileSync('src/app.html', appTemplate)
-    }
+    closeBundle
   }
 }
 
