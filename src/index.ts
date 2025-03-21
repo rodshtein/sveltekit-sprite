@@ -1,38 +1,52 @@
-import { writeFileSync, readFileSync } from 'fs'
-import { Plugin } from 'vite'
+import { writeFileSync } from 'fs'
+import { type ViteDevServer, Plugin } from 'vite'
 import { compiler } from './compiler'
 import type { Options } from './types'
 
 function sveltekitSprite({
-  injectLabel = '%vite.plugin.sprite%',
-  svgSource,
+  svgSource = 'src/lib/sprite',
+  outputFile = 'src/lib/sveltekit-sprite.svg',
   symbolPrefix,
   stylePrefix,
   svgoOptions,
 }: Options = {}): Plugin {
-  const appTemplate:string = readFileSync('src/app.html', 'utf-8');
-  const closeBundle = async () => {
-    writeFileSync("src/app.html", appTemplate);
-  };
+  let viteDevServer: ViteDevServer | undefined;
 
-  process.on('SIGINT', async () => {
-    await closeBundle();
-    process.exit(0);
-  });
-  
+  async function generateSprite() {
+      try {
+          const filesString = await compiler({
+              svgSource,
+              symbolPrefix,
+              stylePrefix,
+              svgoOptions
+          });
+
+          writeFileSync(outputFile, filesString);
+
+          if (viteDevServer) {
+            viteDevServer.ws.send({
+              type: 'full-reload',
+              path: '*'
+            });
+          }
+      } catch (error) {
+          console.error("[sveltekit-sprite:error] generating sprite:", error);
+      }
+  }
+
   return {
-    name: 'sveltekit-sprite',
+    name: "sveltekit-sprite",
     async buildStart() {
-      const filesString = await compiler({
-        svgSource,
-        symbolPrefix,
-        stylePrefix,
-        svgoOptions,
-      });
-      
-      writeFileSync('src/app.html', appTemplate.replace(injectLabel, filesString))
+        await generateSprite();
     },
-    closeBundle
+    configureServer(server) {
+        viteDevServer = server;
+    },
+    watchChange: async function (path) {
+      if (path.includes(svgSource)) {
+        await generateSprite();
+      }
+    },
   }
 }
 
