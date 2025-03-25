@@ -31,10 +31,10 @@ export interface Options {
    * Default: svg-style
    */
   stylePrefix?:string
-  
+
   /**
-   * Target for inject sprite in app.html
-   * Default: %vite.plugin.sprite%
+   * Path for generated svg sprite
+   * Default: src/lib/sveltekit-sprite.svg
    */
-  injectLabel?:string
+  outputFile?:string
 }
